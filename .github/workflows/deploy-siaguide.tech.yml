@@ -50,7 +50,13 @@ jobs:
         # You might want to add conditions here, e.g., if: github.ref == 'refs/heads/main' && github.event_name == 'push'
         uses: cloudflare/wrangler-action@v3
         with:
+          wranglerVersion: 4.9.1
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          command: pages deploy docs/dist --project-name=${{ secrets.CLOUDFLARE_PROJECT }}
+          # Optional: Enable this if you want to have GitHub Deployments triggered
+          gitHubToken: ${{ secrets.GITHUB_TOKEN }}
           # Add other wrangler options if needed, e.g.:
           # accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
           # projectName: "your-project-name" # Often inferred, but can be explicit
