@@ -1,15 +1,33 @@
-import { defineConfig } from 'vocs';
+import { defineConfig } from "vocs";
 
 export default defineConfig({
-  title: 'Docs',
+  title: "Sia Guide",
+
+  topNav: [
+    { text: "Sia Docs", link: "https://docs.sia.tech" },
+  ],
+
   sidebar: [
     {
-      text: 'Getting Started',
-      link: '/getting-started',
+      text: "📅 Sia 2.0 Hard Fork ❗️",
+      items: [
+        { text: "Navigating the Hard Fork", link: "/sia/hardfork-2025" },
+        { text: "Wallet Migration Guide", link: "/sia/wallet-migration" },
+      ],
     },
     {
-      text: 'Example',
-      link: '/example',
+      text: "📚 Learn",
+      items: [
+        { text: "Fundamentals", link: "/sia/fundamentals" },
+        { text: "Resources", link: "/sia/resources" },
+      ],
+    },
+  ],
+
+  socials: [
+    {
+      icon: "github",
+      link: "https://github.com/sia-guide",
     },
   ],
 });
