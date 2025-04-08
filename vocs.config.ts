@@ -11,15 +11,15 @@ export default defineConfig({
     {
       text: "📅 Sia 2.0 Hard Fork ❗️",
       items: [
-        { text: "Navigating the Hard Fork", link: "/sia/hardfork-2025" },
-        { text: "Wallet Migration Guide", link: "/sia/wallet-migration" },
+        { text: "Navigating the Hard Fork", link: "/hardfork-2025" },
+        { text: "Wallet Migration Guide", link: "/wallet-migration" },
       ],
     },
     {
       text: "📚 Learn",
       items: [
-        { text: "Fundamentals", link: "/sia/fundamentals" },
-        { text: "Resources", link: "/sia/resources" },
+        { text: "Fundamentals", link: "/fundamentals" },
+        { text: "Resources", link: "/resources" },
       ],
     },
   ],
@@ -27,7 +27,7 @@ export default defineConfig({
   socials: [
     {
       icon: "github",
-      link: "https://github.com/sia-guide",
+      link: "https://github.com/Sia-Guide/sia-guide",
     },
   ],
 });
