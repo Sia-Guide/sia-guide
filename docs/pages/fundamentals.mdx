@@ -1,0 +1,110 @@
+# Fundamentals
+
+This page is designed to introduce you to what Sia is, how it works and how you can use it. Get ready, it won't be short - the aim here is to explain all the basics in a single place so you don't get lost. So take your time and feel free to use the navigation menu on right to jump quickly between sections.
+
+### Why should I even read this?
+Your entire online presence depends completely on others. When services get offline or shut down you're losing parts of yourself and can do nothing about it because there are no better alternatives that would put you in control. And it's even worse if it's source of your income.
+
+Do you want to know if there is a way to change this? And can it even work at scale? We won't tell you - start reading and make your own judgement.
+
+`Don't trust, verify.`
+
+
+
+## What is Sia?
+Sia is a - **private decentralized cloud storage network** - without a single point of failure. You can think of it as of a global hard drive that keeps your data distributed among many hosts around the globe.
+
+You can use it for:
+- `renting` - You pay for uploads and access to your data.
+- `hosting` - You provide your unused space to others and get paid for it.
+
+> You can also use it **indirectly** thanks to third party products built with Sia. Seemingly there might be no difference, but in the background they run the renting software, allowing them to be cheaper and geo-redundant by default.
+
+> Decentralized storage is not limited to decentralized users, anyone can use it.
+
+It is `open-source` and anyone can use it without any permission and in any way - there are no restrictions of what you can or cannot do.
+
+
+::::info
+:::details[Private]
+It means that everything you do is **encrypted** by default and a 12 word `seed` is required to decrypt and access your data. 
+:::
+::::
+
+::::info
+:::details[Decentralized]
+It means there is **no central point** or authority that could prevent you from accessing your data, either by disappearing, or denial of service.
+
+**How is it different from centralized platforms?**
+
+Centralized platforms have a **central point** which is required to access your data. If it's unavailable, that's it - you have no control and if anything happens, fate of your data (if it still exists) is in the hands of its operator.
+- Affected by local power outages
+- Accidents and data breaches can happen
+- Services or entire companies can be shut down at any time
+- You can be denied to access the service or even get completely deplatformed
+- **Examples**: Amazon (AWS), Google (Google Drive), Apple (iCloud) or pretty much anything you're logging online into today
+:::
+::::
+
+::::info
+:::details[Open Source]
+Free Open-Source Software (shortly `FOSS`) is software available under a license that grants users the right to use, modify, and distribute the software free of charge.
+:::
+::::
+
+::::warning
+:::details[How to tell if something is truly decentralized?]
+Many networks are **D**ecentralized-**I**n-the-**N**ame-**O**nly, so called **DINO**. 
+
+**Common characteristics**:
+- Reliance on centralized servers (AWS, Cloudflare, etc. - for example to store data)
+- Control Issues (when a small group can change the rules, halt transactions or deny access)
+- Governance issues (when it happens off-chain)
+- Token Voting manipulation (when few wallets control majority of the governance tokens)
+- Closed Source Code (when you cannot really see what's in the code)
+:::
+::::
+
+## How does it work?
+
+### No trust is required
+
+Anyone can run the downloaded or compiled software to become a part of the network where everyone keeps track of the `consensus` - a state of the network with all of its transactions and file contracts that all network participants agree with.
+
+> This creates an environment where you always have the correct data with no trust required - your software doesn't trust anyone and verifies everything.
+
+The consensus is needed to ensure that `file contracts` between hosts and renters are properly settled - to make sure that renters pay for the service and hosts get paid only if they kept their promise.
+
+This is accomplished by the file contracts in whose the renters **lock** so called `allowance` - an amount of funds based on the estimated storage use and hosts then **lock in** roughly twice as much as so called `collateral`.
+
+> If hosts don't keep their promise, they lose the collateral and renter will automatically re-construct and re-upload affected pieces of data to another host. In the end, host gets paid only for the actually used storage and bandwidth - remaining funds will return to the renter.
+
+
+### Your files are secure
+
+By default, your files are not only `encrypted`, but also stored with `3x redundancy`. Sia is using `erasure coding` where each file is encrypted and split into 30 unique pieces but you only need any 10 of them to retrieve your data.
+
+> Whenever the host holding a specific piece of your file goes offline for too long, that piece is reconstructed (which is easy by using the other pieces) and re-uploaded to a new host. Sia software keeps track of your file health and handles this automatically. 
+
+::::info
+:::details[What is redundancy?]
+Redundancy is the number of uploaded copies of your files.
+
+**1x redundancy**
+
+Let's say your file would be uploaded only once and split between 10 hosts. If any of the hosts holding a piece goes offline, you can no longer access it and it's pretty much lost forever.
+
+**3x redundancy (Sia's default setting)**
+
+At 3x redundancy, you are basically uploading three copies of your files. You can understand it as if each of these 3 files was split into 10 pieces and uploaded to different host. That means 30 hosts are used.
+However that would be a bit simplified answer since `erasure coding` is adding a bit of "science" or "magic" if you want to the mix. Thanks to this approach all 30 pieces are unique and created in a way that any 10 pieces can be used to retrieve the file.
+:::
+::::
+
+
+### Price for freedom
+
+Storage **pricing** is roughly $3 per TB per Month but keep in mind that it depends on individual hosts, the developers of Sia software don't sell any storage.
+> Hosts provide their storage in order to earn money. Running a host requires investment into the hardware and connection and you're competing with other hosts which has an auto-balancing effect on price, making it fair for both, hosts and renters.
+
+> However, hosts are not equal. Some may provide higher quality for higher price and some may provide lower quality for cheap, because they just provide excess storage on a machine that runs 24/7 anyway.

@@ -1,0 +1,104 @@
+# Navigating the Hard Fork
+
+Sia 2.0 marks an important milestone in the network's history and its biggest update so far. Not only you will be using Sia through a new and more performant set of apps, each named after its purpose, but Sia is also migrating its blockchain to a new and more efficient format allowing instant syncing and opening doors for a lot of new applications.
+
+This guide will explain everything in a language you can easily understand:
+- [Hard Fork Phases Explained](#hard-fork-phases)
+- [Benefits & Consequences](#benefits--consequences)
+- [Getting Ready](#getting-ready)
+- [What if I miss it?](#what-if-i-miss-it)
+
+## Hard Fork Phases
+
+::::info
+:::details[What is the difference between v1 and v2?]
+- The difference is in the blockchain format. In order to evolve further, Sia network needs to migrate its blockchain to a more efficient format.
+- All transactions sent using `Sia-UI` are so called **v1**. 
+- The new apps (`walletd`, `renterd`, `hostd`) also support **v1** (else you couldn't use them already), but will switch to **v2** when the fork activates at block `526 000`.
+:::
+::::
+
+::::steps
+### Pre-Hard Fork
+- Only v1 transactions are allowed.
+- There is only the v1 (legacy) Sia blockchain.
+- Supported Wallets: 
+    - `Sia-UI` (28/29-word seed)
+    - `Sia Central Lite Wallet` (12 or 28/29-word seeds, Ledger)
+    - `walletd` (12-word seed, Ledger)
+
+### June 6th, 2025
+- Both v1 and v2 transactions are allowed.
+- Since the block height `526 000` (~6:00 am UTC), both the v2 and legacy blockchains are running in parallel.
+- Supported Wallets: 
+    - `walletd` (12-word seed, Ledger)
+    - `Sia Central Lite Wallet` (12 or 28/29-word seeds, Ledger)
+    - `Sia-UI` (only withdrawals, see below)
+    
+:::warning
+Once the first v2 transaction is broadcasted, `Sia-UI` will no longer be able to maintain accurate ledger, but you can still sign valid v1 transactions. If you receive any SC after the fork activates and you still use 28/29-word seed, please use `Sia Central Lite Wallet` to see the new transactions.
+:::
+
+### July 4th, 2025
+- Only v2 transactions are allowed.
+- By the block `530 000` (~2:00 am UTC), migration to a new blockchain format is complete.
+- Supported Wallets: 
+    - `walletd` (12-word seed, Ledger)
+    - `Sia Central Lite Wallet` (12 or 28/29-word seeds, Ledger)
+::::
+
+## Benefits & Consequences
+
+This hardfork is introducing `Utreexo` (see details below), making Sia probably the world's first Utreexo-native blockchain. It comes with many benefits that are crucial for Sia to scale and to deliver a truly decentralized storage network without compromises.
+
+::::info
+:::details[What is Utreexo?]
+- Today, blockchains are not just a full `transaction history` of the network but each block also contains a `state`, the data needed to validate new blocks. This is huge and evergrowing pile of data. And even if you dropped the whole history, the state required to validate a Sia block is very large, probably close to a few GB.
+- Blockchains also have an enormous databases of UTXOs (unspent transaction outputs) that Utreexo replaces with simple accumulator that provides same core functionality is a database: it lets you add new elements and it lets you ask if some element is present or not. It does even better as it doesn't let you remove an element, which fixes potential consensus issues of other blockchains.
+- Utreexo changes the way we design and implement blockchains by separating the `transaction history` from `state` which reduces its size down to few Kb.
+- This allows new users to skip the long syncing process by downloading one of these states from a peer (or an explorer) very quickly and fast forward to a particular "checkpoint" that is used to initialize the new Sia node.
+
+
+Want to learn more?
+- Sia Blog: [Utreexo in Sia: A Summary](https://blog.sia.tech/utreexo-for-sia-an-overview-fe14e80a7919) (2021)
+- Luke Champine: [Utreexo in Sia: An Overview](https://lukechampine.com/utreexo.html) (2021)
+- Luke Champine: [Utreexo in Context](https://lukechampine.com/utreexo-talk.html) (2022, MIT Bitcoin Expo)
+- Luke Champine: [Actually Functional Blockchain Design](https://www.youtube.com/watch?v=DDqukD6GWoc) (2024, Lambda Conf)
+:::
+::::
+
+Sia software went through radical overhaul over last few years, bringing huge performance, scaling and user experience upgrades. Sia-UI is now deprecated and instead there is a **new set of modern looking apps**, each with its own purpose: walletd for wallet users, renterd for renters, hostd for hosts and explorerd for exchanges or mining pools.
+
+**Main advantage of Utreexo is in how vastly easier it is to join the network as a full node**. Previously you couldn't do anything until you finished syncing. That process took days and in same cases even more than a week as the main bottleneck was your HDD and if you didn't have SSD it took way too long. With 2.0, you can not only download the state of network in form of few Kb, but **you can also download individual blocks in parallel, taking the full sync time down to under an hour**. The main bottleneck in 2.0 is mostly your internet bandwidth which means that with a good connection this could even get down to minutes.
+
+It also opens door for existence of many new features and tools like the `lite node` (see detail below), or `indexer` which will **let people use a 3rd party to manage their contracts** (no more details known at time of writing).
+
+::::info
+:::details[What is instant syncing?]
+- Utreexo makes `instant syncing` possible but it's not what people usually think it does - to instantly see your transactions and balance. The state/accumulator (introduced in Utreexo) alone is not enough to figure out which blocks your transactions are in so you need to download them as well. However, unlike before, now the blocks can be downloaded in parallel, making the remaining process matter of minutes with a good connection, not days.
+- What `instant syncing` really does is that it lets you sync with the network state just from few Kb of data, instantly, getting you all the information you need to start pulling the individual blocks from the network and then locally check them if they contain your transactions.
+:::
+::::
+
+::::info
+:::details[What is a lite node and when it becomes available?]
+- Lite node is a node that still needs to fully sync the entire blockchain but it needs dramatically lower amount of drive space because it will drop any data that you don't need (most recent blocks and blocks with your transactions), dramatically reducing the amount of data on your device.
+- This feature will NOT be available to the users as soon as the hardfork activates. Developers are careful and problems may occur - that's why it is important to run a full node during the transition.
+- Versions of software that have the `lite node` functionality won't be available until the transition is successfully over which means that if everything is working correctly, these versions will start appearing probably not long AFTER the July 4th.
+:::
+::::
+
+
+## Getting Ready
+
+During this transition Sia will move away from the old 28/29-word seed towards the new 12-word seed. While there will still be options for you to migrate from old seeds post-fork, it's recommended to do it before it.
+
+See our [Wallet Migration Guide](/sia/wallet-migration) for detailed instructions.
+
+You can also check the official guide - [Things to Know About Sia's Upcoming Fork](https://docs.sia.tech/navigating-the-v2-hardfork/v2).
+
+## What if I miss it?
+
+No worries. It doesn't matter if you check your old seed now or 10 yers later, it's only logical that there will always be a way for user to access coins from their old seed. 
+
+See our [Wallet Migration Guide](/sia/wallet-migration) for more details.
