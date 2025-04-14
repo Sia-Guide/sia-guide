@@ -4,7 +4,8 @@ Sia network is going to fork on `June 6th, 2025`. This guide will help you to ea
 
 If you want to learn more about the fork, see our dedicated guide [here](/hardfork-2025).
 
-# WORK IN PROGRESS
+
+## What should I do?
 
 - [I have 28/29 word seed and only Siacoin (SC)](#i-have-2829-word-seed-and-only-siacoin-sc)
 - [I have 28/29 word seed with Siacoin (SC) and Siafund (SF)](#i-have-2829-word-seed-with-siacoin-sc-and-siafund-sf)
@@ -20,9 +21,88 @@ If you want to learn more about the fork, see our dedicated guide [here](/hardfo
 :::
 ::::
 
+::::info
+:::details[What is the difference between a seed, wallet and a wallet address?]
+Seed and wallet are basically the same things:
+- `wallet` is an abstract representing something that can hold your coins
+- `seed` is a private key that lets you (or anyone else who has it) to access and manage your coins, meaning that each 1 unique seed always loads the same wallet.
+
+> Keep in mind that wallets are not stored on any server (unlike your bank accounts). The balance you see is based on a local process during which your wallet app checks every single transaction on the network if it matches your seed's signature, writes them down and then displays the balance as a sum of all of your incoming and outgoing transactions.
+
+> This process requires your wallet application to be fully synchronized, because the wallet app can show you only results based on the data it knows. Partial synchronization may result in all or some of your transactions to be not visible and your balance to be incorrect until you're fully synced.
+
+- `wallet address` is an address that you can use to receive coins to your wallet. One wallet can have many wallet addresses and no matter which one of them you will use, the received coins will always belong to your wallet. 
+
+> If you forget your wallet address, that's ok. You don't even have to remember it, because it can be easily generated again or you can just easily generate another one.
+
+> **Only thing that you need to remember is your seed.** If you lose it, you lose access to your coins and no one can help you.
+:::
+::::
+
+
+
 ### I have 28/29 word seed and only Siacoin (SC)
+
+::::steps
+#### Create new wallet and generate a wallet address
+ 
+- Use `walletd` or `Sia Central Lite Wallet`.
+- Create a new wallet and securely store the displayed 12-word seed. If you lose it, no one can help you.
+- Click **Receive** and copy the wallet address. You don't have to write the address down, unless you want to receive coins in future without having to open your wallet to  generate another address.
+
+#### Load your old wallet with 28/29-word seed
+ 
+- Use `Sia-UI` or `Sia Central Lite Wallet`. The later option is more convenient at this time because it's way faster, it's multi-wallet (so you can handle the entire migration in single place) and you won't be using the old seed anymore.
+- Click **Send** and paste in the previously copied wallet address. Make sure that first few and last few characters are the same and it is the same address. Then confirm it and check the new wallet in few minutes, the incoming transaction should appear.
+
+> If you're using `Sia-UI` you need to be fully synced first, which can take several days. Also be careful if you previously used some older Sia-UI version - it is recommended to delete the `consensus` and `transactionpool` folders and re-sync, otherwise risking that you might see inaccurate balance until you re-sync.
+
+> If you're using `Sia Central Lite Wallet` and you cannot see your transactions, check the options and increase the "Address Lookahead". Users who have some of the oldest wallets might need to set it to `550 000`.
+ 
+#### Migration done!
+ 
+- After seeing the coins in the new wallet you've successfully finished the migration. Make sure your new seed is securely saved and it's still a good idea to also keep the old seed as you never know when you accidentally send coins to it out of a habit.
+
+> Remember that the seed you just made is to be used with the "wallets" only, like `walletd` or `Sia Central Lite Wallet`. If you ever decide to start renting or hosting, please make a new seed for that purpose, because renting/hosting both uses only the wallet address at first index.
+::::
+
 ### I have 28/29 word seed with Siacoin (SC) and Siafund (SF)
+
+- The process is identical as above with only difference - you need to use Sia-UI to send your Siafunds away.
+> As of now (April 2025) `Sia Central Lite Wallet` doesn't support Siafunds. However, with the lite wallet being the only way to load your old seeds post-fork, it's very likely it  will add support for Siafunds in near future.
+
 ### I have 12 word seed
+
+- You don't have to do anything. You're ready!
+
 ### I have Ledger HW Wallet
+
+- You don't have to do anything. You're ready!
+- **NEW**: Not only you can still use `Sia Central Lite Wallet` with your `Ledger` as you're used to (the lite wallet was updated to work with Sia 2.0), but you can also use the new `walletd`. Just keep in mind that you might need to modify the starting `block height` (set it to 0 if you can't see your transactions and are not sure at which block height they happened) and hit the `re-scan` button.
+
 ### I have my coins on an exchange
+
+- While this is also one option, it's not recommended to keep your coins on an exchange during forks. With exchanges you don't hold the keys, the exchange does and you're fully depending on it.
+- If you want to move your coins to own wallet, you can follow the instructions above to create new wallet and then **Withdraw** the coins from the exchange to it.
+
+
 ### What if I miss the hardfork?
+
+- No worries. The same steps mentioned above will work even after the fork. Only difference is that you can no longer use `Sia-UI`, you will have to use `Sia Central Lite Wallet`.
+- It doesn't matter when you do it, your coins are in the blockchain and they will stay dormant until the time you decide to move them.
+
+
+## What wallet should I use?
+
+Basically you have three options:
+- If you want to be your own master, run your own `walletd` node (wallet app with an entire copy of blockchain). Be prepared that synchronization can take some time.
+- If you are in a hurry, use `Sia Central Lite Wallet`. You're still in control (your seed is encrypted in the cache's browser and never leaves your computer), but you skip the blockchain synchronization as the server operator (Sia Foundation) is running already synced blockchain it reads from, resulting in instant access to your coins.
+- If you want to use hardware wallet for its secure seed management and very convenient usage, try `Ledger HW Wallet`. It's currently not available on Ledger Live, but both the **walletd** and **Sia Central Lite Wallet** support it. See a detailed guide in the [official Sia Docs](https://docs.sia.tech/sia-integrations/using-the-sia-ledger-nano-app-sia-central).
+
+## Where can I download the wallets?
+We're intentionally not sharing any links. Clickink links on the internet without any awareness is fastest way to get scammed. We believe it's a good practice to educate the users by making them find the downloads themselves.
+
+You can find all of the wallets on **Sia's website**, which is `sia.tech`, in the `Wallets` tab. You can buy `Ledher HW Wallet` at many places - just make sure you buy a new and **sealed** one.
+> Keep in mind that Sia Foundation will never force you to update your wallet and no matter what, your coins are safe. But there will be many who might try to pressure you into a download of a malicious wallet - don't trust these emails or private messages and if not sure, you can always visit the [official Sia discord](https://discord.gg/sia) and ask the devs and community directly.
+
+> In truly decentralized systems, the updates are voluntary and manual installation of an update is basically a voting process. For example, if the developers ever made some malicious update, users could decide to NOT install it and stay on the old version, still functioning perfectly. It's a part of the platform's immunity and self-defense system, being resistant to ill-intended changes. If you're interested in this, see how an attempt for a hostile corporate takeover, known as [SegWit2x](https://en.bitcoin.it/wiki/SegWit2x), played out for Bitcoin in 2017.
