@@ -8,6 +8,34 @@ This guide will explain everything in a language you can easily understand:
 - [Getting Ready](#getting-ready)
 - [What if I miss it?](#what-if-i-miss-it)
 
+::::warning
+
+If you're a **host**, you should add this to your `hostd.yml` **before July 4th** and also **configure your port** `9984` in order to enable RHP4.
+
+```yml
+rhp4:
+  listenAddresses:
+    - protocol: tcp # tcp, tcp4, or tcp6
+      address: :9984
+```
+
+:::details[What is RHP4 and what is the location of `hostd.yml`?]
+RHP4 is the next generation of renter-host protocol for the Sia storage network. It dramatically increases performance compared to RHP3, improves contract payouts, reduces collateral lockup, and enables features necessary for light clients.
+
+| **Operating System** | **Config File Location** |
+| ------- | ----------- |
+| Linux, FreeBSD, OpenBSD | `/etc/hostd/hostd.yml` |
+| macOS | `~/Library/Application Support/hostd.yml` |
+| Windows | `%APPDATA%\SiaFoundation\hostd.yml` |
+| Docker | `/data/hostd.yml` |
+:::
+
+:::details[Anything else to know?]
+`siad` should be considered dead because `renterd` is ignoring siad hosts and there are most likely no siad renters left.
+:::
+
+::::
+
 ## Hard Fork Phases
 
 ::::info
@@ -17,6 +45,7 @@ This guide will explain everything in a language you can easily understand:
 - The new apps (`walletd`, `renterd`, `hostd`) also support **v1** (else you couldn't use them already), but will switch to **v2** when the fork activates at block `526 000`.
 :::
 ::::
+
 
 ::::steps
 ### Pre-Hard Fork
