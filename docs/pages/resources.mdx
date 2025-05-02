@@ -6,8 +6,130 @@
 - Current [Sia Docs](https://docs.sia.tech/) (v2) | Legacy [Sia Docs](https://docs.sia.tech/legacy) (v1)
 - Luke Champine's [Sia Core Documentation](https://lukechampine.com/v2docs/) (v2) - serves as replacement and comparison to the now-outdated Sia v1 whitepaper from 2014
 
+### Compilation of `#faq-and-resources` from Sia Discord server
+
+:::details[Where to report bugs?]
+The best way to report issues is to search for the issue on Github and create a new one if it doesn’t exist. Keep in mind that `siad` and `Sia-UI` are deprecated since 2025.
+
+|||
+| ------- | ----------- |
+| walletd | https://github.com/SiaFoundation/walletd/issues |
+| hostd | https://github.com/SiaFoundation/hostd/issues |
+| renterd | https://github.com/SiaFoundation/renterd/issues |
+| explored | https://github.com/SiaFoundation/explored/issues |
+| web | https://github.com/SiaFoundation/web/issues |
+:::
+
+
+:::details[How to disable automatic Windows updates permanently?]
+You need to edit `Group Policy`.
+- 1. Run `gpedit.msc`
+- 2. Go to `Computer Configuration > Administrative Templates > Windows Components > Windows Update`
+- 3. Double-click on `Configure Automatic Updates` (on the right-hand side)
+- 4. Click on `Disabled`, then `Apply`, then `OK`.
+
+This works if you have Windows 10 Pro. If you happen to have Windows 10 Home, then you have to install gpedit.msc first. Fortunately, there are guides on YouTube how to do that.
+:::
+
+
+:::details[What is the difference between risked and locked collateral?]
+- `Locked collateral` is the total amount of collateral locked in the storage contracts.
+- `Risked collateral` is a part of the locked collateral, which corresponds to the data actually uploaded to your host by renters. This is what you will lose as a host if you fail to submit valid storage proofs. The rest of the locked collateral will be returned to you when the contracts expire.
+
+**Example:**
+- Your storage price is `100 SC/TB/month` and your collateral is `200 SC/TB/month`.
+- A renter forms a contract with your host to store `2TB` of data for `3 months`. You lock `200 * 2 * 3 = 1200 SC` as collateral.
+- Your locked collateral is now `1200 SC`. But your risked collateral is `zero`, because there is no data uploaded yet.
+- Then the renter uploads `500 GB (0.5 TB)` of data to your host. Your locked collateral stays the same, 1200 SC. But now you are risking `200 * 0.5 * 3 = 300 SC`.
+- If your host manages to submit a valid storage proof after 3 months, you receive back your locked collateral of `1200 SC` plus `revenue (100 * 0.5 * 3 = 150 SC)` plus `revenue coming from eventual bandwidth usage` minus `miner fees`.
+- If your host fails to submit a valid storage proof, then you only receive back the amount of locked collateral, which is not risked (`900 SC`). You also receive the revenue coming from the bandwidth usage. All the rest is `burned`.
+:::
+
+
+:::details[Which wallet can be used to store Siacoin?]
+The coins are not stored in a specific wallet; they are stored on the blockchain. Your seed is the key to access your coins, so you should really do your best to keep it safe and secure. A wallet is just an interface, which helps visualize the funds and the transactions. 
+
+There are currently only these options:
+
+- The official `walletd`. Using this means to  run a full Sia node, but this way you are also increasing the security of the Sia network.
+- The `Sia Central Lite Wallet`. It does not require running a full node, and you can see your funds instantly, without needing to sync your wallet, but it is still considered a third-party wallet, even though it was developed by a member of the Sia dev team. You also have to trust a centralized server if you use this wallet. Nevertheless, this is a perfect option if you just need to see your coins or move them around. It also has a built-in support for a Ledger Nano device in which case you don't have to worry about security as the keys won't ever leave the hardware wallet device.
+
+You can find them both here: https://sia.tech/wallet
+:::
+
+
+
+:::details[I used Ledger HW Wallet but it's lost or broken. Can I get to the coins without buying new one?]
+Yes, you can! Check the official Sia website for `Sia Ledger Sweep` here: https://sia.tech/wallet
+
+It will get you to a repository with a script. You can either compile it yourself (if you know how), or run the binaries attached in a link at bottom of the page.
+
+The program will ask you for two things. `Ledger Recovery Phrase` (it derives the Sia seed from it) and `Sia wallet address` where you want to send the coins to (like an exchange or newly made wallet). It uses Sia Central's API to build and submit the transaction.
+
+Keep in mind that entering your Ledger Recovery Phrase into your computer is a security risk and doing so should be your last possible option. But since you're reading this you don't have the physical device, don't plan to buy a new one and your only concern is to get to the assets and in such case this is the correct approach.
+
+Also keep in mind that if you eventually decide to get a new Ledger HW Wallet, you should totally use it with a new recovery phrase. Don't reuse the old one and always make sure the new hw wallet is sealed, don't use it if it's not.
+:::
+
+
+:::details[What ports are used for hosting on Sia?]
+- **Sia Network**
+- `9980 [close]` - Node Management Interface over `localhost`, it should NEVER be open.
+- `9981 [optional]` - Peer Discovery, open it if you want to support the network.
+- `9982 [open]` - RHP2.
+- `9983 [open]` - RHP3/TCP.
+- `9984 [open]` - RHP4.
+
+- **Testnet (Zen)**: `9880-9884` (same, but second number is always 8 instead of 9)
+:::
+
+
+:::details[Is there a tool I can use to check my host configuration?]
+Yes, `Sia Central Host Troubleshooter` (https://troubleshoot.siacentral.com/) can check your ports 9982-9984 and help you with troubleshooting, both for Mainnet (Sia) and Testnet (Zen).
+:::
+
+
+:::details[Is there any way to check if a specific wallet address was created with specific seed?]
+Yes, there is a tool for it written by @lukechampine that supports the Sia's old 28/29-words seeds. If anyone needs a version that works with the new 12-word format, devs would have to create a new script so it's best to visit the Sia discord and ask for it.
+https://gist.github.com/lukechampine/db408c445e64b97d943c3562946b904b
+
+**Usage:**
+- download binary at bottom of the page and unpack the archive (or compile it yourself)
+- launch command line and navigate to the unpacked folder
+- launch the app with address as a parameter: `./addrsearch.exe YOUR_WALLET_ADDRESS`
+- you will be asked for your 28/29-word seed, so enter it and you will get the answer -> if the address wasn't derived from the seed, then this means you have a wrong seed
+
+**Notes:**
+- you don't have to be online to use this, so take any security measures that make you feel good
+- if you downloaded the binaries, they will have platform added to the filename, in that case make sure you rename it to `addsearch.exe`, or edit the command above to  include the platform name like `./addrsearch-windows.exe YOUR_WALLET_ADDRESS`
+:::
+
+
+:::details[Having issues with Ledger? Tried different cables and still cannot get it to work?]
+Keep in mind that these steps were written `for Sia Central Lite Wallet`. If you're using `walletd` and also getting stuck, some of these steps might be different. If you won't manage to solve it, best thing you can do is visit Sia Discord and just ask in #help.
+
+- 1. If open, close `Ledger Live`. If your Ledger device is plugged in, unplug it.
+- 2. Open the lite wallet in the latest version of `Google Chrome`.
+- 3. Hard refresh the app `CMD/CTRL+SHIFT+R`.
+- 4. Enter your password.
+- 5. If using `USB`, plug the Ledger device in and open the `Sia app`. If using `Bluetooth`, just open the `Sia app`.
+- 6. Click `Send` from the wallet page.
+- 7. Fill-in the amounts.
+- 8. Click the `Send` button at the bottom.
+- 9. Click `Connect` in the lite wallet to connect to the device make sure it says `Connected v0.4.5` (version might be different) for Nano X.
+- 10. Click the "Sign" button at the bottom.
+- 11. Approve the transaction on the device by clicking both buttons. You may need to do this multiple times.
+- 12. Click `Send`
+:::
+
+
+:::details[Does the Foundation burn Siacoins? I heard burning was a topic some time ago.]
+The community unanimously voted against a burn and for the funds to be used and put towards grants, hire more developers, marketing, partnerships, etc. So a 4 year budget proposal was put together and given for community input. That budget has changed slightly as we have identified which areas of spending were more or less beneficial. But it is the basis of the budget breakdown on our quarterly reports and guides how much of the subsidy we keep in fiat reserves.
+https://www.reddit.com/r/siacoin/s/jY2beTkq1R
+:::
+
+
+Source: [Sia Discord](https://discord.gg/sia) - *Thanks to Nate, mike76, Skunk_Ink, Kinomora, nemo and CtrlAltDefeat for the original posts that might no longer exist but all of them were updated and re-formatted)*
+
 ### Other Resources
 - Luke Champine (Co-Founder of Sia) - [List of blog posts, academic papers, talks and other projects](https://lukechampine.com/)
-
-
-### To be continued...
