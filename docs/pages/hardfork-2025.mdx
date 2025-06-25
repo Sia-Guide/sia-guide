@@ -1,86 +1,18 @@
-# Navigating the Hard Fork
+# Missed the Hard Fork(s)?
 
-Sia 2.0 marks an important milestone in the network's history and its biggest update so far. Not only you will be using Sia through a new and more performant set of apps, each named after its purpose, but Sia is also migrating its blockchain to a new and more efficient format allowing instant syncing and opening doors for a lot of new applications.
+There have been several hard forks in Sia network's lifetime. Most recent one happened on **June 6th, 2025** and upgraded Sia to its **2.0** version.
 
-This guide will explain everything in a language you can easily understand:
-- [Hard Fork Phases Explained](#hard-fork-phases)
-- [Benefits & Consequences](#benefits--consequences)
-- [Getting Ready](#getting-ready)
-- [What if I miss it?](#what-if-i-miss-it)
-
-::::warning
-
-If you're a **host**, you should have this in your `hostd.yml` **before July 4th** (it's default, but only for the mainnet version) in order to enable RHP4.
-
-You must also **make sure your RHP4 port is open to the internet**. If you use a non standard port you must make the addition to `hostd.yml` with your chosen port and make sure it is open to the internet.
-
-```yml
-rhp4:
-  listenAddresses:
-    - protocol: tcp # tcp, tcp4, or tcp6
-      address: :9984
-```
-
-:::details[What is RHP4 and what is the location of `hostd.yml`?]
-RHP4 is the next generation of renter-host protocol for the Sia storage network. It dramatically increases performance compared to RHP3, improves contract payouts, reduces collateral lockup, and enables features necessary for light clients.
-
-| **Operating System** | **Config File Location** |
-| ------- | ----------- |
-| Linux, FreeBSD, OpenBSD | `/etc/hostd/hostd.yml` |
-| macOS | `~/Library/Application Support/hostd.yml` |
-| Windows | `%APPDATA%\SiaFoundation\hostd.yml` |
-| Docker | `/data/hostd.yml` |
-:::
-
-:::details[Anything else to know?]
-`siad` should be considered dead because `renterd` is ignoring siad hosts and there are most likely no siad renters left.
-:::
-
-::::
-
-## Hard Fork Phases
-
-::::info
-:::details[What is the difference between v1 and v2?]
-- The difference is in the blockchain format. In order to evolve further, Sia network needs to migrate its blockchain to a more efficient format.
-- All transactions sent using `Sia-UI` are so called **v1**. 
-- The new apps (`walletd`, `renterd`, `hostd`) also support **v1** (else you couldn't use them already), but will switch to **v2** when the fork activates at block `526 000`.
-:::
-::::
+**Sia 2.0** marks an important milestone in the network's history and its biggest update so far. Not only you will be using Sia through a new and more performant set of apps, each named after its purpose, but Sia is also migrating its blockchain to a new and more efficient format allowing instant syncing and opening doors for a lot of new applications.
 
 
-::::steps
-### Pre-Hard Fork
-- Only v1 transactions are allowed.
-- There is only the v1 (legacy) Sia blockchain.
-- Supported Wallets: 
-    - `Sia-UI` (28/29-word seed)
-    - `Sia Central Lite Wallet` (12 or 28/29-word seeds, Ledger)
-    - `walletd` (12-word seed, Ledger)
+## Contents:
+- [What changed?](#what-changed)
+- [What should I do?](#what-should-i-do)
 
-### June 6th, 2025
-- Both v1 and v2 transactions are allowed.
-- Since the block height `526 000` (~6:00 am UTC), both the v2 and legacy blockchains are running in parallel.
-- Supported Wallets: 
-    - `walletd` (12-word seed, Ledger)
-    - `Sia Central Lite Wallet` (12 or 28/29-word seeds, Ledger)
-    - `Sia-UI` (only withdrawals, see below)
-    
-:::warning
-Once the first v2 transaction is broadcasted, `Sia-UI` will no longer be able to maintain accurate ledger, but you can still sign valid v1 transactions. If you receive any SC after the fork activates and you still use 28/29-word seed, please use `Sia Central Lite Wallet` to see the new transactions.
-:::
 
-### July 4th, 2025
-- Only v2 transactions are allowed.
-- By the block `530 000` (~2:00 am UTC), migration to a new blockchain format is complete.
-- Supported Wallets: 
-    - `walletd` (12-word seed, Ledger)
-    - `Sia Central Lite Wallet` (12 or 28/29-word seeds, Ledger)
-::::
+## What changed?
 
-## Benefits & Consequences
-
-This hardfork is introducing `Utreexo` (see details below), making Sia probably the world's first Utreexo-native blockchain. It comes with many benefits that are crucial for Sia to scale and to deliver a truly decentralized storage network without compromises.
+This hardfork has introduced `Utreexo` (see details below), making Sia the world's first Utreexo-native blockchain. It comes with many benefits that are crucial for Sia to scale and to deliver a truly decentralized storage network without compromises.
 
 ::::info
 :::details[What is Utreexo?]
@@ -95,6 +27,14 @@ Want to learn more?
 - Luke Champine: [Utreexo in Sia: An Overview](https://lukechampine.com/utreexo.html) (2021)
 - Luke Champine: [Utreexo in Context](https://lukechampine.com/utreexo-talk.html) (2022, MIT Bitcoin Expo)
 - Luke Champine: [Actually Functional Blockchain Design](https://www.youtube.com/watch?v=DDqukD6GWoc) (2024, Lambda Conf)
+:::
+::::
+
+::::info
+:::details[What is the difference between v1 and v2?]
+- The difference is in the blockchain format. In order to evolve further, Sia network had to migrate its blockchain to a more efficient format.
+- The new apps (`walletd`, `renterd`, `hostd`) also support **v1** (else you couldn't use them already), but switched to **v2** when the fork activated at block `526 000` (June 6th).
+- All transactions sent using `Sia-UI` are so called **v1**. It can no longer be used but v1 transactions are still accepted by the network until the block `530 000` (July 4th).
 :::
 ::::
 
@@ -120,16 +60,106 @@ It also opens door for existence of many new features and tools like the `lite n
 ::::
 
 
-## Getting Ready
+## What should I do?
 
-During this transition Sia will move away from the old 28/29-word seed towards the new 12-word seed. While there will still be options for you to migrate from old seeds post-fork, it's recommended to do it before it.
+This information is for those who miss/missed the July 4th and want to know what options they have left.
 
-See our [Wallet Migration Guide](/wallet-migration) for detailed instructions.
+Both renters and hosts should update to latest versions (of `renterd` and `hostd`) and then re-sync.
 
-You can also check the official guide - [Things to Know About Sia's Upcoming Fork](https://docs.sia.tech/navigating-the-v2-hardfork/v2).
+As a **renter** you probably already lost all of your data and need to re-upload them.
 
-## What if I miss it?
+As a **host** you probably failed a bunch of contracts, affecting your host reputation. You will need to decide if it's better to start a new host (identity). Reputation affects the rate at which renters select your host, so this shouldn't be underestimated.
 
-No worries. It doesn't matter if you check your old seed now or 10 yers later, it's only logical that there will always be a way for user to access coins from their old seed. 
+Follow the instructions on the official site for [Hosts](https://sia.tech/provide-storage) & [Renters](https://sia.tech/store-your-data)
 
-See our [Wallet Migration Guide](/wallet-migration) for more details.
+### Wallet users:
+- [I have 28/29 word seed](#i-have-2829-word-seed)
+- [I have 12 word seed](#i-have-12-word-seed)
+- [I have Ledger HW Wallet](#i-have-ledger-hw-wallet)
+- [I have my coins on an exchange](#i-have-my-coins-on-an-exchange)
+- [What wallet should I use?](#what-wallet-should-i-use)
+- [Where can I download the wallets?](#where-can-i-download-the-wallets)
+
+::::info
+:::details[What is the difference betweeen SC and SF?]
+- Siacoin (SC) is the cryptocurrency powering the network. Renters pay for storage in SC and hosts earn SC for their service. Miners also earn SC for their block creation services, which provide security to the network and finally the Siafund holders receive SC as well.
+- Siafund (SF) is the supplementary coin of the network that is utilized for revenue sharing, where a 3.9% fee from every storage-related transaction on the Sia network is split between all of the Siafund holders. See more details in the official [Sia docs](https://docs.sia.tech/siafunds/learn-about-siafunds).
+:::
+::::
+
+::::info
+:::details[What is the difference between a seed, wallet and a wallet address?]
+Seed and wallet are basically the same things:
+- `wallet` is an abstract representing something that can hold your coins
+- `seed` is a private key that lets you (or anyone else who has it) to access and manage your coins, meaning that each 1 unique seed always loads the same wallet.
+
+> Keep in mind that wallets are not stored on any server (unlike your bank accounts). The balance you see is based on a local process during which your wallet app checks every single transaction on the network if it matches your seed's signature, writes them down and then displays the balance as a sum of all of your incoming and outgoing transactions.
+
+> This process requires your wallet application to be fully synchronized, because the wallet app can show you only results based on the data it knows. Partial synchronization may result in all or some of your transactions to be not visible and your balance to be incorrect until you're fully synced.
+
+- `wallet address` is an address that you can use to receive coins to your wallet. One wallet can have many wallet addresses and no matter which one of them you will use, the received coins will always belong to your wallet. 
+
+> If you forget your wallet address, that's ok. You don't even have to remember it, because it can be easily generated again or you can just easily generate another one.
+
+> **Only thing that you need to remember is your seed.** If you lose it, you lose access to your coins and no one can help you.
+:::
+::::
+
+
+### I have 28/29 word seed
+
+The only wallet currently accepting 28/29 word seeds is the `Sia Central Lite Wallet`. It works for both Siacoin (SC) and Siafund (SF) and you can find it [here](#where-can-i-download-the-wallets).
+
+
+::::steps
+#### Create new wallet and generate a wallet address
+ 
+- Use `Sia Central Lite Wallet` (or `walletd`) to create a new wallet and securely store the displayed 12-word seed. If you lose it, no one can help you.
+- Click **Receive** and copy the wallet address.
+
+#### Load your old wallet with 28/29-word seed
+ 
+- Use `Sia Central Lite Wallet` to load your old wallet from the 28/29-wird seed. Sia Central is a multi-wallet so you can handle the entire migration in single place.
+- Click **Send** and paste in the wallet address you copied in previous step. Make sure that first few and last few characters are the same and it is the same address. Then confirm it and check the new wallet in few minutes, the incoming transaction should appear.
+- If you cannot see your transactions, check the options and increase the "Address Lookahead" to something like `500 000`.
+ 
+#### Migration done!
+ 
+- After seeing the coins in the new wallet you've successfully finished the migration. Make sure your new seed is securely saved and it's still a good idea to also keep the old seed as you never know when you accidentally send coins to it out of a habit.
+- If you cannot see the incoming transaction, give it few minutes. And if you are using `walletd`, you will see the transaction only after being 100% synced.
+
+> Remember that the seed you just made is to be used with the "wallets" only, like `walletd` or `Sia Central Lite Wallet`. If you ever decide to start renting or hosting, please make a new seed for that purpose, because renting/hosting both uses only the wallet address at first index.
+::::
+
+### I have 12 word seed
+
+- You don't have to do anything. You're ready!
+
+### I have Ledger HW Wallet
+
+- You don't have to do anything else, just update your Sia app from the Ledger App Catalog and you're ready!
+- If you cannot see transactions, set the starting `block height` to 0, hit the `re-scan` button and wait a bit.
+
+### I have my coins on an exchange
+
+- Your exchange should have upgrade but if that's not the case, you need to contact their support as they are ones holding your coins. Not your keys, not your coins.
+
+## What wallet should I use?
+
+Basically you have three options:
+- If you want to be your own master, run your own `walletd` node (wallet app with an entire copy of blockchain). Be prepared that synchronization can take some time.
+- If you are in a hurry, use `Sia Central Lite Wallet`. You're still in control (your seed is encrypted in the cache's browser and never leaves your computer), but you skip the blockchain synchronization as the server operator (Sia Foundation) is running already synced blockchain it reads from, resulting in instant access to your coins.
+- If you want to use hardware wallet for its secure seed management and very convenient usage, try `Ledger HW Wallet`. It's currently not available on Ledger Live, but both the **walletd** and **Sia Central Lite Wallet** support it. See a detailed guide in the [official Sia Docs](https://docs.sia.tech/sia-integrations/using-the-sia-ledger-nano-app-sia-central).
+
+## Where can I download the wallets?
+We're intentionally not sharing any links. Clicking links on the internet without any awareness is fastest way to get scammed. We believe it's a good practice to educate the users by making them find the downloads themselves.
+
+You can find all of the wallets on **Sia's website**, which is `sia.tech`:
+- lite wallet: https://sia.tech/community?category=wallets (scroll down)
+- walletd: https://sia.tech/upgrade-your-software
+
+ If you decide to get a `Ledger HW Wallet`, you can find it in many stores - just make sure you buy a new and **sealed** one.
+
+> Keep in mind that Sia Foundation will never force you to update your wallet and no matter what, your coins are safe. But there will be many who might try to pressure you into a download of a malicious wallet - don't trust these emails or private messages and if not sure, you can always visit the [official Sia discord](https://discord.gg/sia) and ask the devs and community directly.
+
+> In truly decentralized systems, the updates are voluntary and manual installation of an update is basically a voting process. For example, if the developers ever made some malicious update, users could decide to NOT install it and stay on the old version, still functioning perfectly. It's a part of the platform's immunity and self-defense system, being resistant to ill-intended changes. If you're interested in this, see how an attempt for a hostile corporate takeover, known as [SegWit2x](https://en.bitcoin.it/wiki/SegWit2x), played out for Bitcoin in 2017.

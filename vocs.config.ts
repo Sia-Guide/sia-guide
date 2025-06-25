@@ -11,8 +11,7 @@ export default defineConfig({
     {
       text: "📅 Sia 2.0 Hard Fork ❗️",
       items: [
-        { text: "Navigating the Hard Fork", link: "/hardfork-2025" },
-        { text: "Wallet Migration Guide", link: "/wallet-migration" },
+        { text: "Missed the Hard Fork?", link: "/hardfork-2025" },
       ],
     },
     {
